@@ -174,6 +174,7 @@ jobs:
       - name: Run the runner-provided real client smoke script
         env:
           MYTHICRAFT_REAL_SMOKE_SCRIPT: ${{ vars.MYTHICRAFT_REAL_SMOKE_SCRIPT }}
+          MYTHICRAFT_MAP_DIAGNOSTIC: "1"
         run: |
           set -euo pipefail
           test -n "${MYTHICRAFT_REAL_SMOKE_SCRIPT:-}"

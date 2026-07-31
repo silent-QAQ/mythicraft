@@ -14,7 +14,7 @@
 cargo run -p mythicraft-server -- --root D:\mythicraft\runtime
 ```
 
-`runtime` 必须是已经存在的目录。首次启动时 Pumpkin 会在该目录生成 `pumpkin.toml` 和默认世界数据；将 `pumpkin.toml` 的 `default_level_name` 指向经过检查的地图目录，即可使用既有地图。入口会在创建 Pumpkin 服务端前读取已有世界的 `level.dat`，提前报告 DataVersion、出生点和损坏/不支持错误；当前 Pumpkin 世界数据范围为 `4435..=4903`。
+`runtime` 必须是已经存在的目录。首次启动时 Pumpkin 会在该目录生成 `pumpkin.toml` 和默认世界数据；将 `pumpkin.toml` 的 `default_level_name` 指向经过检查的地图目录，即可使用既有地图。入口会在创建 Pumpkin 服务端前读取已有世界的 `level.dat`，提前报告 DataVersion、出生点和损坏/不支持错误。设置 `MYTHICRAFT_MAP_DIAGNOSTIC=1` 后，还会运行一个有界的 Mythicraft 地图诊断，汇总 region、区块数量、DataVersion、坐标范围和损坏 region；默认关闭，避免启动时重复扫描大型地图。当前 Pumpkin 世界数据范围为 `4435..=4903`。
 
 也可以使用环境变量：
 

@@ -1,8 +1,13 @@
 use std::{env, error::Error, path::PathBuf, process::ExitCode};
 
+use mythicraft_api::DataVersionRange;
+use mythicraft_world::{inspect_world_directory, ChunkNbtSchema, WorldInspectionLimits};
 use pumpkin::{data::VanillaData, init_logger, PumpkinServer};
 use pumpkin_config::{LoadConfiguration, PumpkinConfig};
-use pumpkin_world::world_info::{anvil::AnvilLevelInfo, WorldInfoReader};
+use pumpkin_world::world_info::{
+    anvil::AnvilLevelInfo, WorldInfoReader, MAXIMUM_SUPPORTED_WORLD_DATA_VERSION,
+    MINIMUM_SUPPORTED_WORLD_DATA_VERSION,
+};
 
 const DEFAULT_ROOT: &str = ".";
 
@@ -73,7 +78,84 @@ fn validate_existing_world(config: &PumpkinConfig) -> Result<(), Box<dyn Error>>
         spawn_z = level.spawn_z,
         "Existing Anvil world passed Pumpkin world-info preflight"
     );
+    if map_diagnostic_enabled() {
+        log_world_diagnostic_summary(&world_path);
+    }
     Ok(())
+}
+
+fn map_diagnostic_enabled() -> bool {
+    matches!(
+        env::var("MYTHICRAFT_MAP_DIAGNOSTIC")
+            .ok()
+            .as_deref()
+            .map(str::to_ascii_lowercase)
+            .as_deref(),
+        Some("1" | "true" | "on")
+    )
+}
+
+fn log_world_diagnostic_summary(world_path: &std::path::Path) {
+    let schema = ChunkNbtSchema::new(
+        DataVersionRange {
+            minimum: MINIMUM_SUPPORTED_WORLD_DATA_VERSION,
+            maximum: MAXIMUM_SUPPORTED_WORLD_DATA_VERSION,
+        },
+        [
+            "sections",
+            "Heightmaps",
+            "block_entities",
+            "entities",
+            "structures",
+            "Status",
+            "blending_data",
+            "block_ticks",
+            "fluid_ticks",
+            "InhabitedTime",
+            "isLightOn",
+            "LastUpdate",
+            "PostProcessing",
+            "CarvingMasks",
+            "below_zero_retrogen",
+            "yPos",
+            "xPos",
+            "zPos",
+        ],
+    );
+    match inspect_world_directory(world_path, &schema, WorldInspectionLimits::default()) {
+        Ok(summary) => {
+            tracing::info!(
+                world = %world_path.display(),
+                region_count = summary.region_count,
+                present_chunk_count = summary.present_chunk_count,
+                inspected_chunk_count = summary.inspected_chunk_count,
+                data_versions = ?summary.data_versions,
+                coordinate_bounds = ?summary.coordinate_bounds,
+                issues = summary.issues.len(),
+                "Mythicraft bounded map diagnostic completed"
+            );
+            for issue in summary.issues.iter().take(8) {
+                tracing::warn!(
+                    world = %world_path.display(),
+                    path = %issue.relative_path,
+                    kind = ?issue.kind,
+                    "Map diagnostic reported a region issue"
+                );
+            }
+            if summary.issues.len() > 8 {
+                tracing::warn!(
+                    world = %world_path.display(),
+                    omitted = summary.issues.len() - 8,
+                    "Additional map diagnostic issues were omitted from the startup log"
+                );
+            }
+        }
+        Err(error) => tracing::warn!(
+            world = %world_path.display(),
+            %error,
+            "Mythicraft map diagnostic could not inspect the world; Pumpkin preflight remains authoritative"
+        ),
+    }
 }
 
 fn server_root<I>(mut args: I) -> Result<PathBuf, Box<dyn Error>>

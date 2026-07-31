@@ -5,27 +5,27 @@ These are concrete follow-up tasks discovered by the Window 4 black-box suite. W
 ## W1-WORLD-LOAD-001
 
 - Owner: Window 1.
-- Current evidence: the legacy `crates/world` black-box `world_load` stage is machine-readably marked `skipped`; the production `server/` path now delegates world loading to Pumpkin, but no Mythicraft map-diagnostic bridge or real-map evidence has been recorded yet.
-- Required fix: either expose a bounded Pumpkin world/map-summary adapter or explicitly retire the legacy stage in favor of a Pumpkin-backed black-box stage with `DataVersion` diagnostics, map hash, and corrupt-region failure results.
-- Acceptance: replace the skipped stage with a real valid/corrupt/unsupported world fixture test against the selected production path.
+- Current evidence: the production `server/` path delegates world loading to Pumpkin and now runs the bounded `mythicraft-world` map diagnostic after Pumpkin's authoritative `level.dat` preflight. The integration harness now covers valid, corrupt-region and unsupported-`DataVersion` cases; no real licensed map evidence has been recorded yet.
+- Required fix: add runner-provided real-map evidence that records `DataVersion`, region/区块 summary, map hash, and corrupt-region failure results.
+- Acceptance: execute the production entry with a licensed map on a runner and retain the diagnostic log/evidence artifact.
 
 ## W1-NBT-FUZZ-001
 
 - Owner: Window 1.
-- Current evidence: `crates/nbt` currently exposes limits but no parser entry point.
-- Required fix: expose bounded NBT/Anvil parsing for corrupt compression, recursion depth, large lists, palette validation, and unknown `DataVersion`.
+- Current evidence: `crates/nbt::parse_named_root` and `crates/world::inspect_world_directory` now expose bounded NBT/Anvil parsing with size, depth, collection, compression, palette and `DataVersion` checks; the integration harness exercises the parser through a cross-window `world_load` stage.
+- Required fix: add long-running fuzz/property coverage without relaxing the existing bounds.
 - Acceptance: Window 4 can run the existing world security corpus without private implementation access.
 
 ## W2-YAML-BOM-001
 
 - Owner: Window 2.
-- Current evidence: `import_mythicmobs` rejects the shared UTF-8-BOM fixture unless the integration adapter strips the BOM first.
-- Required fix: normalize one optional UTF-8 BOM before YAML parsing without changing diagnostic line/column semantics.
+- Current evidence: `import_mythicmobs` normalizes one optional UTF-8 BOM before YAML parsing; the Pumpkin integration passes the same normalization path.
+- Required fix: retain direct-import regression coverage so future parser changes do not reintroduce BOM failures.
 - Acceptance: importing `fixtures/compat/mythicmobs/basic.yml` directly succeeds and retains the unknown-field diagnostic.
 
 ## W3-ACTION-PAGE-001
 
 - Owner: Window 3.
-- Current evidence: `UiActionContext` binds page version and nonce but has no expected page ID or actor/session identity.
-- Required fix: bind action authorization to active page ID and actor/session ID before replay/rate-limit recording.
+- Current evidence: Pumpkin binds actions to the player's active page ID/version/nonce and performs permission, range, state, expiry and replay checks before execution. The generic crate-level gate remains intentionally actor-agnostic and must be scoped by its caller.
+- Required fix: add a cross-actor/session regression case to the Pumpkin-backed integration stage; do not weaken the generic gate's reusable API.
 - Acceptance: cross-page actions with otherwise matching version and nonce are rejected; the same request ID from different actors is scoped correctly.

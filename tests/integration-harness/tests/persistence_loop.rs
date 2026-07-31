@@ -1,3 +1,4 @@
+use flate2::{write::GzEncoder, Compression};
 use mythicraft_client_services::{
     AssetLimits, AssetManifest, AudioClientGate, AudioDecision, AudioPlay, CapabilityPolicy,
     ClientCapability, ClientHello, PayloadEnvelope, ProtocolLimits, UiAction, UiActionContext,
@@ -16,6 +17,7 @@ use mythicraft_rpg::{
 };
 use mythicraft_session::{HandshakeIntent, SessionMachine, SessionState};
 use mythicraft_vanilla_data::load_version_matrix;
+use mythicraft_world::{inspect_world_directory, ChunkNbtSchema, WorldInspectionLimits};
 use serde_json::json;
 use std::collections::{BTreeSet, HashMap};
 use std::fs;
@@ -64,10 +66,53 @@ fn machine_readable_vertical_slice_uses_real_cross_window_contracts() -> Result<
         Ok::<_, String>(())
     })?;
 
-    runner.skip(
-        "world_load",
-        "Window 1 currently exposes version and chunk contracts but no Anvil world loader",
-    )?;
+    runner.stage("world_load", || {
+        let world_root = root.join("world");
+        let unsupported_root = root.join("unsupported-world");
+        write_level_dat(&world_root, 4903)?;
+        write_level_dat(&unsupported_root, i32::MAX)?;
+        fs::create_dir_all(world_root.join("region")).map_err(|error| error.to_string())?;
+        fs::create_dir_all(unsupported_root.join("region")).map_err(|error| error.to_string())?;
+        fs::write(world_root.join("region/r.0.0.mca"), vec![0_u8; 8192])
+            .map_err(|error| error.to_string())?;
+        fs::write(world_root.join("region/r.1.0.mca"), vec![0_u8; 39])
+            .map_err(|error| error.to_string())?;
+
+        let schema = ChunkNbtSchema::new(
+            mythicraft_api::DataVersionRange {
+                minimum: 4435,
+                maximum: 4903,
+            },
+            ["sections", "Heightmaps"],
+        );
+        let summary =
+            inspect_world_directory(&world_root, &schema, WorldInspectionLimits::default())
+                .map_err(|error| error.to_string())?;
+        if !summary.level_dat.supported
+            || summary.region_count != 1
+            || !summary.issues.iter().any(|issue| {
+                matches!(
+                    issue.kind,
+                    mythicraft_world::WorldFileIssueKind::RegionInspectionFailed { .. }
+                )
+            })
+        {
+            return Err(format!(
+                "unexpected valid/corrupt world summary: {summary:?}"
+            ));
+        }
+
+        let unsupported =
+            inspect_world_directory(&unsupported_root, &schema, WorldInspectionLimits::default())
+                .map_err(|error| error.to_string())?;
+        if unsupported.level_dat.supported || unsupported.level_dat.data_version != i32::MAX {
+            return Err(format!(
+                "unsupported world version was accepted: {:?}",
+                unsupported.level_dat
+            ));
+        }
+        Ok::<_, String>(())
+    })?;
 
     let mut session = SessionMachine::new(776);
     runner.stage("client_connect", || {
@@ -409,12 +454,29 @@ fn machine_readable_vertical_slice_uses_real_cross_window_contracts() -> Result<
     }
     if results
         .iter()
-        .filter(|result| result.status == StageStatus::Skipped)
-        .count()
-        != 1
+        .any(|result| result.status == StageStatus::Skipped)
     {
-        return Err("expected exactly one skipped stage".into());
+        return Err("world_load must be covered by the bounded Anvil diagnostic".into());
     }
     fs::remove_dir_all(root).map_err(|error| error.to_string())?;
     Ok(())
+}
+
+fn write_level_dat(root: &PathBuf, data_version: i32) -> Result<(), String> {
+    fs::create_dir_all(root).map_err(|error| error.to_string())?;
+    let mut nbt = vec![10, 0, 0, 10, 0, 4, b'D', b'a', b't', b'a'];
+    push_named_int(&mut nbt, "DataVersion", data_version);
+    nbt.extend_from_slice(&[0, 0]);
+    let mut encoder = GzEncoder::new(Vec::new(), Compression::default());
+    std::io::Write::write_all(&mut encoder, &nbt).map_err(|error| error.to_string())?;
+    let compressed = encoder.finish().map_err(|error| error.to_string())?;
+    fs::write(root.join("level.dat"), compressed).map_err(|error| error.to_string())
+}
+
+fn push_named_int(bytes: &mut Vec<u8>, name: &str, value: i32) {
+    bytes.push(3);
+    let name_length = u16::try_from(name.len()).expect("synthetic NBT name length");
+    bytes.extend_from_slice(&name_length.to_be_bytes());
+    bytes.extend_from_slice(name.as_bytes());
+    bytes.extend_from_slice(&value.to_be_bytes());
 }

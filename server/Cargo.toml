@@ -8,6 +8,8 @@ publish = false
 description = "Mythicraft server runtime backed by the authorized Pumpkin core"
 
 [dependencies]
+mythicraft-api = { path = "../crates/api" }
+mythicraft-world = { path = "../crates/world" }
 pumpkin = { path = "../Pumpkin-master/pumpkin" }
 pumpkin-config = { path = "../Pumpkin-master/pumpkin-config" }
 pumpkin-world = { path = "../Pumpkin-master/pumpkin-world" }

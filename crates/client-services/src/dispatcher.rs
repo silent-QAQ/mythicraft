@@ -49,7 +49,7 @@ impl ProtocolDispatcher {
 
     pub fn route(&self, envelope: PayloadEnvelope) -> Result<ProtocolMessage, DispatchError> {
         envelope.validate(self.limits)?;
-        match envelope.message_type {
+        match envelope.message_type.clone() {
             MessageType::Hello => {
                 let message: ClientHello = envelope.payload_as()?;
                 message.validate(self.limits)?;

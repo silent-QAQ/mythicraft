@@ -1,8 +1,7 @@
 use std::{env, error::Error, path::PathBuf, process::ExitCode};
 
-use pumpkin::{init_logger, PumpkinServer};
+use pumpkin::{data::VanillaData, init_logger, PumpkinServer};
 use pumpkin_config::{LoadConfiguration, PumpkinConfig};
-use pumpkin_data::VanillaData;
 use pumpkin_world::world_info::{anvil::AnvilLevelInfo, WorldInfoReader};
 
 const DEFAULT_ROOT: &str = ".";

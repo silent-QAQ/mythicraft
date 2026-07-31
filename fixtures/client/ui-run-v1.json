@@ -1,0 +1,13 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_run",
+  "schema_version": 1,
+  "request_id": "ui-run-0001",
+  "payload_length": 76,
+  "nonce": "arcartx-session-0001",
+  "payload": {
+    "page_id": "任务面板",
+    "page_version": 1,
+    "code": "Message.chat('clicked')"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "hello",
+  "schema_version": 1,
+  "request_id": "hello-0001",
+  "payload_length": 265,
+  "payload": {
+    "protocol_version": 1,
+    "mod_version": "0.1.0-dev",
+    "loader": {
+      "name": "unfrozen",
+      "version": "0.0.0"
+    },
+    "resource_manifest_hash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+    "capabilities": [
+      "ui_hud",
+      "ui_damage_display",
+      "audio_play",
+      "model_visibility"
+    ]
+  }
+}

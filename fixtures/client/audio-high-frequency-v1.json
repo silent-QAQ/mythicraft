@@ -1,0 +1,86 @@
+[
+  {
+    "namespace": "mythicraft",
+    "message_type": "audio_play",
+    "schema_version": 1,
+    "request_id": "audio-burst-0001",
+    "payload_length": 210,
+    "payload": {
+      "event_id": "audio-burst-0001",
+      "sound_id": "mythicraft:sounds/ui/quest_accept",
+      "position": {
+        "x": 12.5,
+        "y": 65,
+        "z": -4.25
+      },
+      "volume": 1,
+      "channel": "ui",
+      "priority": 80,
+      "expires_at_unix_ms": 1900000000000,
+      "max_distance": 32
+    }
+  },
+  {
+    "namespace": "mythicraft",
+    "message_type": "audio_play",
+    "schema_version": 1,
+    "request_id": "audio-burst-0002",
+    "payload_length": 210,
+    "payload": {
+      "event_id": "audio-burst-0002",
+      "sound_id": "mythicraft:sounds/ui/quest_accept",
+      "position": {
+        "x": 12.5,
+        "y": 65,
+        "z": -4.25
+      },
+      "volume": 1,
+      "channel": "ui",
+      "priority": 80,
+      "expires_at_unix_ms": 1900000000000,
+      "max_distance": 32
+    }
+  },
+  {
+    "namespace": "mythicraft",
+    "message_type": "audio_play",
+    "schema_version": 1,
+    "request_id": "audio-burst-0003",
+    "payload_length": 210,
+    "payload": {
+      "event_id": "audio-burst-0003",
+      "sound_id": "mythicraft:sounds/ui/quest_accept",
+      "position": {
+        "x": 12.5,
+        "y": 65,
+        "z": -4.25
+      },
+      "volume": 1,
+      "channel": "ui",
+      "priority": 80,
+      "expires_at_unix_ms": 1900000000000,
+      "max_distance": 32
+    }
+  },
+  {
+    "namespace": "mythicraft",
+    "message_type": "audio_play",
+    "schema_version": 1,
+    "request_id": "audio-burst-0004",
+    "payload_length": 210,
+    "payload": {
+      "event_id": "audio-burst-0004",
+      "sound_id": "mythicraft:sounds/ui/quest_accept",
+      "position": {
+        "x": 12.5,
+        "y": 65,
+        "z": -4.25
+      },
+      "volume": 1,
+      "channel": "ui",
+      "priority": 80,
+      "expires_at_unix_ms": 1900000000000,
+      "max_distance": 32
+    }
+  }
+]

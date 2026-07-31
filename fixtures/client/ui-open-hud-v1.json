@@ -1,0 +1,48 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_open",
+  "schema_version": 1,
+  "request_id": "ui-open-hud-0001",
+  "payload_length": 510,
+  "payload": {
+    "page_id": "rpg.hud",
+    "page_version": 1,
+    "model": {
+      "hud": {
+        "revision": 1,
+        "health": 82,
+        "max_health": 100,
+        "level": 12,
+        "experience_fraction": 0.45,
+        "bars": [
+          {
+            "id": "mana",
+            "label": "Mana",
+            "current": 36,
+            "maximum": 50,
+            "color": "3366ff"
+          }
+        ]
+      },
+      "skill_bar": {
+        "revision": 1,
+        "slots": [
+          {
+            "slot": 0,
+            "skill_id": "arcane_bolt",
+            "icon_resource_id": "mythicraft:textures/skills/arcane_bolt",
+            "remaining_cooldown_ticks": 12,
+            "total_cooldown_ticks": 40,
+            "charges": 1,
+            "max_charges": 1
+          }
+        ]
+      }
+    },
+    "required_capabilities": [
+      "ui_hud",
+      "ui_skill_bar"
+    ],
+    "required_permissions": []
+  }
+}

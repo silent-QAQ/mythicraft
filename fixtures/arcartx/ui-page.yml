@@ -1,0 +1,63 @@
+# ArcartX UI 文件示例。真实 ArcartX 文件通常由文件名提供 id；
+# 这里显式写 page_id，便于独立 fixture 直接验证。
+page_id: mythicraft:character
+version: 7
+nonce: fixture-page-nonce
+permissions:
+  - mythicraft.ui.character
+required_capabilities:
+  - ui_hud
+
+ui:
+  isHud: false
+  defaultOpen: false
+  itemSize: "16"
+  match:
+    - default
+  action:
+    click: "character:refresh"
+
+controls:
+  refresh_button:
+    type: Button
+    val: refresh
+    permission: mythicraft.ui.character.refresh
+    attribute:
+      normal: "~mythicraft/ui/character/button.png"
+      point: "~stretch_all"
+      width: 180
+      height: 48
+    action:
+      click: "refresh_character"
+    children:
+      label:
+        type: Text
+        val: refresh_label
+        attribute:
+          texts: "刷新"
+          fontSize: 24
+  avatar:
+    type: Image
+    attribute:
+      normal: "~mythicraft/ui/character/avatar.png"
+
+resources:
+  character_button:
+    path: mythicraft/ui/character/button.png
+    kind: texture
+    sha256: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+    permissions:
+      - mythicraft.ui.character
+  avatar: "~mythicraft/ui/character/avatar.png"
+
+actions:
+  open_profile:
+    control_id: refresh_button
+    type: click
+    command: "refresh_character"
+    permissions:
+      - mythicraft.ui.character.refresh
+
+# 故意保留一个未知字段，解析器应产生 unknown_field 诊断。
+future_extension:
+  render_pipeline: deferred

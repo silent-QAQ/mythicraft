@@ -1,0 +1,39 @@
+﻿{
+  "entries": {
+    "luckperms": {
+      "source_version": "LuckPerms-config",
+      "status": "Converted",
+      "covered_fields": ["groups", "users"],
+      "unsupported": [],
+      "diagnostics": []
+    },
+    "mythicmobs": {
+      "source_version": "MythicMobs-5.13.0",
+      "status": "Partial",
+      "covered_fields": [],
+      "unsupported": ["MM_UNKNOWN_FIELD", "MM_UNKNOWN_FIELD"],
+      "diagnostics": ["MM_UNKNOWN_FIELD", "MM_UNKNOWN_FIELD"]
+    },
+    "mythicmobs-minimal": {
+      "source_version": "MythicMobs-5.13.0",
+      "status": "Converted",
+      "covered_fields": [],
+      "unsupported": [],
+      "diagnostics": []
+    },
+    "paper": {
+      "source_version": "Paper-server.properties",
+      "status": "Partial",
+      "covered_fields": ["motd", "online-mode", "server-port", "view-distance"],
+      "unsupported": ["unknown-paper-option"],
+      "diagnostics": ["PAPER_UNSUPPORTED_FIELD"]
+    },
+    "vault": {
+      "source_version": "VaultUnlocked-config",
+      "status": "Converted",
+      "covered_fields": ["currency-name", "starting-balance", "fractional-digits"],
+      "unsupported": [],
+      "diagnostics": ["VAULT_ECONOMY_INIT"]
+    }
+  }
+}

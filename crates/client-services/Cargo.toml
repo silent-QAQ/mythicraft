@@ -1,0 +1,13 @@
+[package]
+name = "mythicraft-client-services"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Renderer-independent client capability and payload contracts for Mythicraft"
+
+[dependencies]
+mythicraft-api = { path = "../api" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+thiserror = "1"

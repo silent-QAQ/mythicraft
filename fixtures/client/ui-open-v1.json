@@ -1,0 +1,27 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_open",
+  "schema_version": 1,
+  "request_id": "ui-open-0001",
+  "payload_length": 249,
+  "payload": {
+    "page_id": "quest.dialogue",
+    "page_version": 3,
+    "model": {
+      "title": "The First Trial",
+      "body": "Defeat the training construct.",
+      "controls": [
+        {
+          "id": "accept",
+          "label": "Accept"
+        }
+      ]
+    },
+    "required_capabilities": [
+      "ui_dialog"
+    ],
+    "required_permissions": [
+      "rpg.quest.accept"
+    ]
+  }
+}

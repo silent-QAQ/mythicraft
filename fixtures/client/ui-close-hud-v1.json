@@ -1,0 +1,13 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_close",
+  "schema_version": 1,
+  "request_id": "ui-close-hud-0001",
+  "payload_length": 80,
+  "payload": {
+    "page_id": "rpg.hud",
+    "page_version": 2,
+    "reason": "replaced",
+    "cleanup": "immediate"
+  }
+}

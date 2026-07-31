@@ -1,0 +1,27 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "capabilities",
+  "schema_version": 1,
+  "request_id": "capabilities-0001",
+  "payload_length": 235,
+  "payload": {
+    "accepted": [
+      "ui_hud",
+      "ui_damage_display",
+      "ui_skill_bar",
+      "ui_dialog",
+      "ui_bossbar",
+      "ui_hologram",
+      "ui_waypoint",
+      "audio_play",
+      "model_visibility",
+      "input_bind"
+    ],
+    "required": [
+      "ui_hud"
+    ],
+    "degraded": [],
+    "rpg_play_allowed": true,
+    "error_reasons": []
+  }
+}

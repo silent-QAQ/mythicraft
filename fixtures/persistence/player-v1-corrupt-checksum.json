@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "revision": 3,
+  "state": {
+    "player_id": "fixture-player",
+    "position": {
+      "world": "minecraft:overworld",
+      "x": 1.0,
+      "y": 70.0,
+      "z": 2.0,
+      "yaw": 0.0,
+      "pitch": 0.0
+    },
+    "attributes": {},
+    "inventory": [],
+    "quests": {},
+    "permission_cache": null,
+    "economy_balance": 9,
+    "applied_transactions": []
+  },
+  "checksum": "00"
+}
+

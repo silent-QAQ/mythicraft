@@ -1,0 +1,8 @@
+Mobs:
+  TestMob:
+    Type: ZOMBIE
+    Health: 20
+    Damage: 3
+    Skills:
+      - "damage{amount=4} @target ~onSpawn"
+      - "condition{type=healthbelow;value=10} | heal{amount=2} @self ~onTimer20"

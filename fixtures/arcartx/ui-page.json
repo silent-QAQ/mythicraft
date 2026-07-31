@@ -1,0 +1,38 @@
+{
+  "page_id": "mythicraft:inventory",
+  "page_version": 3,
+  "permissions": ["mythicraft.ui.inventory"],
+  "ui": {
+    "isHud": true,
+    "screenScale": true
+  },
+  "components": {
+    "close": {
+      "type": "Button",
+      "attribute": {
+        "normal": "~mythicraft/ui/inventory/close.png"
+      },
+      "action": {
+        "click": "close_inventory"
+      }
+    }
+  },
+  "resources": [
+    {
+      "id": "close",
+      "path": "mythicraft/ui/inventory/close.png",
+      "kind": "texture"
+    }
+  ],
+  "actions": [
+    {
+      "id": "close_inventory",
+      "control_id": "close",
+      "type": "click",
+      "script": "close_inventory"
+    }
+  ],
+  "unknown_extension": {
+    "owner": "ArcartX"
+  }
+}

@@ -1,0 +1,33 @@
+# 对应 ArcartX tooltip/示例.yml 的最小兼容片段。
+# id 由 source_id=tooltip/character.yml 推导为 character。
+kind: tooltip
+version: 2
+tip:
+  match: default
+root_control:
+  type: Tip
+  attribute:
+    width: 1920
+    height: 1080
+    autoScale: true
+  children:
+    panel:
+      type: Canvas
+      attribute:
+        width: 320
+        height: 180
+      children:
+        background:
+          type: 9SliceTexture
+          attribute:
+            normal: "~tips/background.png"
+            left: 16
+            right: 16
+            top: 16
+            bottom: 16
+        display:
+          type: Text
+          val: display
+          attribute:
+            texts: Tip.getDisplay()
+            point: "~top_center"

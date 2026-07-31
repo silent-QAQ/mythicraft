@@ -1,0 +1,21 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "audio_play",
+  "schema_version": 1,
+  "request_id": "audio-play-0001",
+  "payload_length": 211,
+  "payload": {
+    "event_id": "quest-accept-0001",
+    "sound_id": "mythicraft:sounds/ui/quest_accept",
+    "position": {
+      "x": 12.5,
+      "y": 65,
+      "z": -4.25
+    },
+    "volume": 1,
+    "channel": "ui",
+    "priority": 80,
+    "expires_at_unix_ms": 1900000000000,
+    "max_distance": 32
+  }
+}

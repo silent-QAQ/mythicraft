@@ -1,0 +1,187 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      run_real_smoke:
+        description: "在已配置的真实客户端 self-hosted runner 上运行 smoke"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  outer-quality:
+    name: Outer workspace quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        run: rustup toolchain install 1.96.0 --profile minimal --component rustfmt,clippy
+
+      - name: Inspect both workspaces
+        run: |
+          cargo metadata --manifest-path Cargo.toml --no-deps --format-version 1
+          cargo metadata --manifest-path Pumpkin-master/Cargo.toml --no-deps --format-version 1
+
+      - name: Check formatting for both workspaces
+        run: |
+          cargo fmt --manifest-path Cargo.toml --all --check
+          cargo fmt --manifest-path Pumpkin-master/Cargo.toml --all --check
+
+      - name: Build the complete outer workspace
+        run: cargo build --manifest-path Cargo.toml --workspace --all-targets
+
+      - name: Check the complete outer workspace
+        run: cargo check --manifest-path Cargo.toml --workspace --all-targets
+
+      - name: Build the production server and its Pumpkin path dependencies
+        run: cargo build --manifest-path Cargo.toml --package mythicraft-server --release
+
+      - name: Run outer workspace clippy
+        run: cargo clippy --manifest-path Cargo.toml --workspace --all-targets -- -D warnings
+
+      - name: Run outer workspace tests
+        run: cargo test --manifest-path Cargo.toml --workspace --all-targets
+
+      - name: Verify committed fixtures
+        run: cargo run --manifest-path Cargo.toml -p mythicraft-tools -- fixture-verify fixtures
+
+      - name: Scan repository inputs for release violations
+        run: cargo run --manifest-path Cargo.toml -p mythicraft-tools -- release-scan crates tools tests fixtures docs .github
+
+      - name: Install cargo-deny
+        run: cargo install cargo-deny --locked
+
+      - name: Check dependency advisories, licenses, bans, and sources
+        run: cargo deny --config .github/deny-ci.toml --manifest-path Cargo.toml check advisories bans licenses sources
+
+  pumpkin-quality:
+    name: Pumpkin workspace quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        run: rustup toolchain install 1.96.0 --profile minimal --component rustfmt,clippy
+
+      - name: Check Pumpkin formatting
+        run: cargo fmt --manifest-path Pumpkin-master/Cargo.toml --all --check
+
+      - name: Build all Pumpkin workspace targets
+        run: cargo build --manifest-path Pumpkin-master/Cargo.toml --workspace --all-targets
+
+      - name: Check all Pumpkin workspace targets
+        run: cargo check --manifest-path Pumpkin-master/Cargo.toml --workspace --all-targets
+
+      - name: Test all Pumpkin workspace targets
+        run: cargo test --manifest-path Pumpkin-master/Cargo.toml --workspace --all-targets
+
+      - name: Install cargo-deny
+        run: cargo install cargo-deny --locked
+
+      - name: Check Pumpkin dependency advisories, licenses, bans, and sources
+        run: cargo deny --config .github/deny-ci.toml --manifest-path Pumpkin-master/Cargo.toml check advisories bans licenses sources
+
+  package:
+    name: Package CI artifact
+    needs: [outer-quality, pumpkin-quality]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        run: rustup toolchain install 1.96.0 --profile minimal
+
+      - name: Build release server artifact
+        run: cargo build --manifest-path Cargo.toml --package mythicraft-server --release
+
+      - name: Stage and scan the CI artifact
+        run: |
+          set -euo pipefail
+          mkdir -p dist/ci-artifact
+          cp target/release/mythicraft-server dist/ci-artifact/mythicraft-server
+          sha256sum dist/ci-artifact/mythicraft-server > dist/ci-artifact/SHA256SUMS
+          cargo run --manifest-path Cargo.toml -p mythicraft-tools -- release-scan dist/ci-artifact
+          tar -C dist/ci-artifact -czf dist/mythicraft-server-ci-${GITHUB_SHA}.tar.gz .
+
+      - name: Upload CI artifact and scan evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mythicraft-server-ci-${{ github.sha }}
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
+
+  artifact-smoke:
+    name: Artifact integrity smoke
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mythicraft-server-ci-${{ github.sha }}
+          path: dist
+
+      - name: Verify archive, checksum, and executable bit
+        run: |
+          set -euo pipefail
+          archive="dist/mythicraft-server-ci-${GITHUB_SHA}.tar.gz"
+          test -s "$archive"
+          mkdir -p extracted
+          tar -xzf "$archive" -C extracted
+          (cd extracted && sha256sum -c SHA256SUMS)
+          test -x extracted/mythicraft-server
+
+  real-machine-smoke:
+    name: Real machine/client smoke (opt-in)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_real_smoke == true }}
+    needs: package
+    runs-on: [self-hosted, linux, mythicraft-real-smoke]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mythicraft-server-ci-${{ github.sha }}
+          path: dist
+
+      - name: Extract and verify the artifact
+        run: |
+          set -euo pipefail
+          archive="dist/mythicraft-server-ci-${GITHUB_SHA}.tar.gz"
+          mkdir -p extracted
+          tar -xzf "$archive" -C extracted
+          (cd extracted && sha256sum -c SHA256SUMS)
+          test -x extracted/mythicraft-server
+
+      - name: Run the runner-provided real client smoke script
+        env:
+          MYTHICRAFT_REAL_SMOKE_SCRIPT: ${{ vars.MYTHICRAFT_REAL_SMOKE_SCRIPT }}
+        run: |
+          set -euo pipefail
+          test -n "${MYTHICRAFT_REAL_SMOKE_SCRIPT:-}"
+          test -x "$MYTHICRAFT_REAL_SMOKE_SCRIPT"
+          mkdir -p "$RUNNER_TEMP/mythicraft-smoke-runtime"
+          "$MYTHICRAFT_REAL_SMOKE_SCRIPT" \
+            "$PWD/extracted/mythicraft-server" \
+            "$RUNNER_TEMP/mythicraft-smoke-runtime" \
+            "$RUNNER_TEMP/mythicraft-real-smoke.json"
+          test -s "$RUNNER_TEMP/mythicraft-real-smoke.json"
+
+      - name: Upload real smoke evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mythicraft-real-smoke-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mythicraft-real-smoke.json
+            ${{ runner.temp }}/mythicraft-smoke-runtime
+          if-no-files-found: warn

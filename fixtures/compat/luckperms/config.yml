@@ -1,0 +1,33 @@
+﻿groups:
+  default:
+    weight: 1
+    permissions:
+      - node: mythic.spawn
+        value: true
+  vip:
+    weight: 20
+    inheritance:
+      - group: default
+    options:
+      prefix: "[VIP]"
+      suffix: "!"
+      weight: 20
+    meta:
+      - color:
+          value: gold
+    permissions:
+      - mythic.cast:
+          value: true
+          expiry: 1200
+          context:
+            world: arena
+users:
+  00000000-0000-0000-0000-000000000001:
+    primary-group: vip
+    parents:
+      - vip
+    permissions:
+      - mythic.user: false
+    meta:
+      - title:
+          value: Hero

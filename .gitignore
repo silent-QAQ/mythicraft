@@ -1,0 +1,17 @@
+/target/
+/**/target/
+*.tmp
+*.bak
+*.log
+artifacts/
+
+# Local research inputs; keep them available in the shared workspace but do not
+# redistribute third-party source/assets through the Mythicraft repository.
+/MythicMobs-5.13.0/
+/LuckPerms-master/
+/VaultUnlocked-master/
+/ArcartX_Plugin-main/
+/ArcartX-2.5.36/
+/SteelMC-master/
+/\[压缩包-公开版\]DragonCore-2.6.2.9 (1)/
+/Pumpkin-master (1).zip

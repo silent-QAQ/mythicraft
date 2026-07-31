@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "minecraft_version": "26.2",
+  "protocol_version": 776,
+  "data_version": {
+    "minimum": 4903,
+    "maximum": 4903
+  },
+  "registry_sha256": "3ffaca442dbbd1d9acb2b7bf2509cbd80e30dbc5349dfbad39eda7f4e6bd5a8b",
+  "client": {
+    "loader": "pending",
+    "loader_version": null,
+    "mod_version": "0.1.0-dev"
+  }
+}

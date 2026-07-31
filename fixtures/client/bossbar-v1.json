@@ -1,0 +1,16 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "bossbar",
+  "schema_version": 1,
+  "request_id": "bossbar-0001",
+  "payload_length": 121,
+  "payload": {
+    "boss_entity": 42,
+    "revision": 1,
+    "title": "Training Construct",
+    "current": 725,
+    "maximum": 1000,
+    "color": "purple",
+    "visible": true
+  }
+}

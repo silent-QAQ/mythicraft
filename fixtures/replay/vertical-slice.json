@@ -1,0 +1,2 @@
+{"schema_version":1,"events":["startup","world_load","client_connect","capability_negotiation","player_move","rpg_spawn","skill_damage","loot_economy","ui_audio","disconnect","reconnect","save_restore"]}
+

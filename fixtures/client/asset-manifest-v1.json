@@ -1,0 +1,39 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "asset_manifest",
+  "schema_version": 1,
+  "request_id": "asset-manifest-0001",
+  "payload_length": 772,
+  "payload": {
+    "manifest_version": 1,
+    "manifest_hash": "b5353cb0199a140b4066401f0ac24385dd6c9eebdaa14b53505b3bb649f62d3a",
+    "assets": [
+      {
+        "resource_id": "mythicraft:sounds/ui/quest_accept",
+        "asset_type": "sound",
+        "path": "sounds/ui/quest_accept.ogg",
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "size_bytes": 8192,
+        "version": "1.0.0",
+        "license": {
+          "source": "Mythicraft original asset",
+          "license": "Project-Owned",
+          "redistribution_allowed": true
+        }
+      },
+      {
+        "resource_id": "mythicraft:textures/ui/quest_panel",
+        "asset_type": "texture",
+        "path": "textures/ui/quest_panel.png",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "size_bytes": 4096,
+        "version": "1.0.0",
+        "license": {
+          "source": "Mythicraft original asset",
+          "license": "Project-Owned",
+          "redistribution_allowed": true
+        }
+      }
+    ]
+  }
+}

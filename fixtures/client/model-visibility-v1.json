@@ -1,0 +1,14 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "model_visibility",
+  "schema_version": 1,
+  "request_id": "model-visibility-0001",
+  "payload_length": 126,
+  "payload": {
+    "entity": 42,
+    "revision": 1,
+    "model_resource_id": "mythicraft:models/entity/training_construct",
+    "visible": true,
+    "reason": "spawned"
+  }
+}

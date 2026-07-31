@@ -1,0 +1,21 @@
+[package]
+name = "mythicraft-tools"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+hex.workspace = true
+mythicraft-api = { path = "../crates/api" }
+mythicraft-observability = { path = "../crates/observability" }
+mythicraft-persistence = { path = "../crates/persistence" }
+mythicraft-vanilla-data = { path = "../crates/vanilla-data" }
+mythicraft-world = { path = "../crates/world" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+walkdir.workspace = true
+
+[dev-dependencies]
+flate2.workspace = true

@@ -1,0 +1,18 @@
+﻿[package]
+name = "mythicraft-compat"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+[dependencies]
+mythicraft-rpg = { path = "../rpg" }
+serde.workspace = true
+serde_yaml.workspace = true
+thiserror.workspace = true
+
+sha2.workspace = true
+serde_json.workspace = true
+
+mythicraft-economy = { path = "../economy" }
+mythicraft-permission = { path = "../permission" }
+uuid.workspace = true
+

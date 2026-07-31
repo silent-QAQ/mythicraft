@@ -1,0 +1,36 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_open",
+  "schema_version": 1,
+  "request_id": "ui-open-dialogue-0001",
+  "payload_length": 494,
+  "payload": {
+    "page_id": "dialogue.first_trial",
+    "page_version": 2,
+    "model": {
+      "dialogue_id": "first_trial",
+      "page_version": 2,
+      "speaker": "Archivist",
+      "text": "The construct awaits. Are you ready?",
+      "portrait_resource_id": "mythicraft:textures/portraits/archivist",
+      "choices": [
+        {
+          "control_id": "accept",
+          "label": "Begin the trial"
+        },
+        {
+          "control_id": "leave",
+          "label": "Not yet"
+        }
+      ],
+      "nonce": "dialogue-nonce-0001",
+      "expires_at_unix_ms": 1900000000000
+    },
+    "required_capabilities": [
+      "ui_dialog"
+    ],
+    "required_permissions": [
+      "rpg.quest.first_trial"
+    ]
+  }
+}

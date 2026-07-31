@@ -1,0 +1,19 @@
+[package]
+name = "mythicraft-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license = "GPL-3.0"
+publish = false
+description = "Mythicraft server runtime backed by the authorized Pumpkin core"
+
+[dependencies]
+pumpkin = { path = "../Pumpkin-master/pumpkin" }
+pumpkin-config = { path = "../Pumpkin-master/pumpkin-config" }
+pumpkin-data = { path = "../Pumpkin-master/pumpkin-data" }
+pumpkin-world = { path = "../Pumpkin-master/pumpkin-world" }
+tokio = { version = "1.53", features = ["macros", "rt-multi-thread", "signal"] }
+tracing = "0.1"
+
+[lints]
+workspace = true

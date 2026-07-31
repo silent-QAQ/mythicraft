@@ -1,0 +1,12 @@
+# Preview compatibility status
+
+| Area | Status | Blocking input |
+|---|---|---|
+| Minecraft protocol | partial | The production entry delegates Java protocol, Login → Configuration → Play and world networking to the authorized Pumpkin runtime. Mythicraft capability/payload hooks are linked into Pumpkin; real-client smoke evidence remains pending. |
+| Anvil `DataVersion` | partial | Startup preflight reads an existing `level.dat` through Pumpkin and reports version/spawn data. The known Pumpkin range is `4435..=4903`; map-summary fixtures and corrupt-region evidence remain pending. |
+| MythicMobs semantics | partial runtime integration | Pumpkin's native `MythicraftCore` scans supported MythicMobs YAML directories and imports supported definitions into the RPG IR. Skill/mechanic execution and full 5.13.0 coverage remain pending. |
+| Vault economy semantics | core service instantiated | The native economy contract is linked into `MythicraftCore` and supports in-memory balance/transaction semantics. Persistent storage and VaultUnlocked migration remain pending. |
+| LuckPerms semantics | core engine instantiated | The native permission engine is linked into `MythicraftCore` and supports the modeled node/group/context rules. LuckPerms file loading, inheritance migration and runtime synchronization remain pending. |
+| Client capability protocol | partial runtime integration | Pumpkin forwards the `mythicraft:main` payload to native MythicraftCore, which negotiates capabilities and receives validated UI actions. Real client/mod smoke evidence and complete page-session authorization remain pending. |
+| ArcartX UI configuration | partial native integration | `plugins/ArcartX/ui` and compatible aliases are scanned by the Pumpkin core; UI/tooltip YAML/JSON is preserved as a native Mythicraft UI model, HUD pages auto-open, and `/mythicraft ui <page>` opens other pages. ArcartX scripts, resource download/CRC, dedicated `arcartx:main` packets, and full non-UI config folders remain pending. |
+| End-to-end server loop | partial | `mythicraft-server` owns the real Pumpkin loop, and RPG/compat/economy/permission/client payload state is directly linked into Pumpkin rather than a separate adapter plugin. Persistent state and real map/client evidence remain pending. GitHub build/test evidence is required from a successful run of `.github/workflows/ci.yml`; this document does not claim that an unobserved run passed. Local Pumpkin build/check/test remains intentionally prohibited. |

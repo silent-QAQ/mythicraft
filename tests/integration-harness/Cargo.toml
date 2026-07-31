@@ -1,0 +1,21 @@
+[package]
+name = "mythicraft-integration-harness"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+[dependencies]
+mythicraft-api = { path = "../../crates/api" }
+mythicraft-client-services = { path = "../../crates/client-services" }
+mythicraft-compat = { path = "../../crates/compat" }
+mythicraft-observability = { path = "../../crates/observability" }
+mythicraft-permission = { path = "../../crates/permission" }
+mythicraft-persistence = { path = "../../crates/persistence" }
+mythicraft-protocol = { path = "../../crates/protocol" }
+mythicraft-rpg = { path = "../../crates/rpg" }
+mythicraft-session = { path = "../../crates/session" }
+mythicraft-vanilla-data = { path = "../../crates/vanilla-data" }
+serde_json.workspace = true
+uuid.workspace = true

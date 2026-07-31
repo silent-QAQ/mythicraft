@@ -1,0 +1,11 @@
+﻿Version: 5.13.0
+Mobs:
+  Goblin:
+    Type: ZOMBIE
+    Display: '&aGoblin'
+    Health: 20
+    Damage: 3
+    Options:
+      Movement-Speed: 0.25
+      Prevent-Other-Drops: true
+    Mystery: true

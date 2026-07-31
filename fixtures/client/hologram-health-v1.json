@@ -1,0 +1,17 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "hologram",
+  "schema_version": 1,
+  "request_id": "hologram-0001",
+  "payload_length": 154,
+  "payload": {
+    "hologram_id": "entity-health-42",
+    "entity": 42,
+    "revision": 1,
+    "label": "Training Construct",
+    "current": 725,
+    "maximum": 1000,
+    "vertical_offset": 2.4,
+    "visible": true
+  }
+}

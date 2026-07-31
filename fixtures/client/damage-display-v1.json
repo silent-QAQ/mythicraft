@@ -1,0 +1,15 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "combat_damage_display",
+  "schema_version": 1,
+  "request_id": "damage-display-0001",
+  "payload_length": 118,
+  "payload": {
+    "event_id": "damage-0001",
+    "target_entity": 42,
+    "amount": 27.5,
+    "damage_type": "arcane",
+    "critical": true,
+    "duration_ticks": 30
+  }
+}

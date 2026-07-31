@@ -1,0 +1,16 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_update",
+  "schema_version": 1,
+  "request_id": "ui-update-hud-0001",
+  "payload_length": 138,
+  "payload": {
+    "page_id": "rpg.hud",
+    "expected_page_version": 1,
+    "page_version": 2,
+    "fields": {
+      "hud.health": 76,
+      "skill_bar.slots.0.remaining_cooldown_ticks": 8
+    }
+  }
+}

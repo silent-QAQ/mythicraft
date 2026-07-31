@@ -1,0 +1,22 @@
+{
+  "namespace": "mythicraft",
+  "message_type": "ui_action",
+  "schema_version": 1,
+  "request_id": "ui-action-0001",
+  "payload_length": 222,
+  "nonce": "ui-nonce-0001",
+  "expires_at_unix_ms": 1900000000000,
+  "payload": {
+    "page_id": "quest.dialogue",
+    "control_id": "accept",
+    "action_type": "submit",
+    "page_version": 3,
+    "nonce": "ui-nonce-0001",
+    "expires_at_unix_ms": 1900000000000,
+    "request_id": "ui-action-0001",
+    "input": {
+      "type": "text",
+      "value": "accepted"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+[package]
+name = "mythicraft-protocol"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+flate2.workspace = true
+mythicraft-api = { path = "../api" }
+thiserror.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+hex.workspace = true
+
+[lints]
+workspace = true

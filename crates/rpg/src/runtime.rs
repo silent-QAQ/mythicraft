@@ -282,7 +282,7 @@ impl RpgRuntime {
                 .iter()
                 .filter_map(|trigger| match trigger {
                     Trigger::Timer { ticks }
-                        if *ticks > 0 && self.tick % u64::from(*ticks) == 0 =>
+                        if *ticks > 0 && self.tick.is_multiple_of(u64::from(*ticks)) =>
                     {
                         Some(*ticks)
                     }

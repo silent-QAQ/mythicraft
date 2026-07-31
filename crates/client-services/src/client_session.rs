@@ -36,6 +36,11 @@ pub enum ClientEffect {
     PageClosed {
         page_id: String,
     },
+    UiRunReceived {
+        page_id: String,
+        version: u64,
+        code: String,
+    },
     ManifestInstalled {
         manifest_hash: String,
     },
@@ -170,6 +175,25 @@ impl ClientSession {
                 self.pages.remove(&close.page_id);
                 Ok(ClientEffect::PageClosed {
                     page_id: close.page_id,
+                })
+            }
+            ProtocolMessage::UiRun(run) => {
+                let current = self
+                    .pages
+                    .get(&run.page_id)
+                    .copied()
+                    .ok_or_else(|| ClientSessionError::PageNotOpen(run.page_id.clone()))?;
+                if current != run.page_version {
+                    return Err(ClientSessionError::PageVersionMismatch {
+                        page_id: run.page_id,
+                        expected: current,
+                        received: run.page_version,
+                    });
+                }
+                Ok(ClientEffect::UiRunReceived {
+                    page_id: run.page_id,
+                    version: run.page_version,
+                    code: run.code,
                 })
             }
             ProtocolMessage::AssetManifest(manifest) => {

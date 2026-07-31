@@ -3,7 +3,7 @@ use std::{collections::BTreeSet, fs, path::PathBuf};
 use mythicraft_client_services::{
     AudioDecision, ClientEffect, ClientSession, ClientSessionError, ClientSessionPhase,
     DispatchError, ExperienceDecision, MessageType, PayloadEnvelope, ProtocolDispatcher,
-    ProtocolMessage, UiOpen,
+    ProtocolMessage, UiOpen, UiRun,
 };
 use serde_json::json;
 
@@ -227,4 +227,51 @@ fn ui_open_payload_remains_renderer_independent() {
     assert!(model.is_object());
     assert!(model.get("hud").is_some());
     assert!(model.get("script").is_none());
+}
+
+#[test]
+fn client_session_accepts_ui_run_for_an_open_page() {
+    let resources = BTreeSet::new();
+    let mut session = ClientSession::new(8, 1_000).expect("valid client session");
+    session
+        .apply(
+            message("capabilities-v1.json"),
+            1_800_000_000_000,
+            &resources,
+        )
+        .expect("capabilities must apply");
+    session
+        .apply(
+            ProtocolMessage::UiOpen(UiOpen {
+                page_id: "任务面板".to_owned(),
+                page_version: 1,
+                model: json!({}),
+                required_capabilities: Vec::new(),
+                required_permissions: Vec::new(),
+            }),
+            1_800_000_000_000,
+            &resources,
+        )
+        .expect("page must open");
+
+    let effect = session
+        .apply(
+            ProtocolMessage::UiRun(UiRun {
+                page_id: "任务面板".to_owned(),
+                page_version: 1,
+                code: "Message.chat('clicked')".to_owned(),
+            }),
+            1_800_000_000_000,
+            &resources,
+        )
+        .expect("ui run must apply");
+
+    assert_eq!(
+        effect,
+        ClientEffect::UiRunReceived {
+            page_id: "任务面板".to_owned(),
+            version: 1,
+            code: "Message.chat('clicked')".to_owned(),
+        }
+    );
 }

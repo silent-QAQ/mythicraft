@@ -494,7 +494,7 @@ impl MythicraftCore {
         let entity_type = EntityType::from_name(&entity_type_name)
             .ok_or_else(|| MythicraftCoreError::UnsupportedEntityType(entity_type_name.clone()))?;
         let runtime_id = Uuid::new_v4().to_string();
-        let spawn_events = {
+        let spawn_events: Vec<RuntimeEvent> = {
             let mut rpg = self.rpg.lock().await;
             rpg.spawn(runtime_id.clone(), definition_id, position)?;
             std::mem::take(&mut rpg.events)

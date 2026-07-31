@@ -263,7 +263,7 @@ impl Server {
             advanced_config,
             data: vanilla_data,
             plugin_manager: Arc::new(PluginManager::new()),
-            mythicraft: MythicraftCore::load_from_root(Path::new("."), seed.0 as u64),
+            mythicraft: MythicraftCore::load_from_root(Path::new("."), seed as u64),
             permission_manager: Arc::new(RwLock::new(PermissionManager::new(
                 permission_registry.clone(),
             ))),

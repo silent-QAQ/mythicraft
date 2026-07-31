@@ -1,3 +1,4 @@
+use crate::block::entities::BlockEntity;
 use crate::command::args::position_3d::Position3DArgumentConsumer;
 use crate::command::args::simple::SimpleArgConsumer;
 use crate::command::args::{Arg, ConsumedArgs, FindArg};

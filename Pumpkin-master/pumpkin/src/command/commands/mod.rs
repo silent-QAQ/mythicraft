@@ -201,7 +201,7 @@ pub async fn default_dispatcher(
     teammsg::register(&mut dispatcher, registry);
     clone::register(&mut dispatcher, registry);
     attribute::register(&mut dispatcher, registry);
-    mythicraft::register(&mut dispatcher, registry);
+    mythicraft::register(&mut dispatcher.fallback_dispatcher, registry);
     dispatcher
 }
 

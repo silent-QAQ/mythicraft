@@ -75,6 +75,7 @@ CI artifact 是诊断构建产物，不是可发布预览包。它包含 release
 - CI artifact job 只验证 server binary 的归档和 hash，没有运行 `release-manifest-verify`；正式发布仍必须提供全部必需角色并对最终 staging 执行 manifest 校验。
 - 真实客户端 smoke 使用 runner 提供的外部脚本、固定地图和客户端安装，不是仓库内可复现的测试 harness；这些输入缺失时，真实 smoke 保持未执行状态。
 - CI 许可证 allow-list 包含 GPL-3.0 以覆盖 Pumpkin 直接依赖，但 cargo-deny 结果不能替代逐文件来源、通知文本和对应源码义务审查。
+- `.github/deny-ci.toml` 仅定向豁免 Pumpkin 当前无法安全升级的 `atomic-polyfill`、`proc-macro-error2` 和 `rsa` advisory；其中 RSA 豁免涉及登录加密路径，正式发布前必须完成替代实现或独立安全评估。已撤回的 `spin` 版本不在豁免范围内，必须持续更新到非 yanked 版本。
 
 ## GitHub quality gate
 

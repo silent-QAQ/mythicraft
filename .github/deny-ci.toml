@@ -1,17 +1,30 @@
 [advisories]
 yanked = "deny"
+# These are transitive dependencies of the authorized Pumpkin runtime. The
+# current upstream graph has no safe upgrade for them; keep the exceptions
+# explicit and review them whenever Pumpkin or the protocol crypto path moves.
+ignore = [
+    "RUSTSEC-2023-0089", # atomic-polyfill is unmaintained; required by heapless 0.7.x.
+    "RUSTSEC-2026-0173", # proc-macro-error2 is unmaintained; required by Pumpkin macros.
+    "RUSTSEC-2023-0071", # rsa Marvin timing advisory; no patched rsa release is available.
+]
 
 [licenses]
 confidence-threshold = 0.8
 allow = [
     "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSL-1.0",
     "BSD-2-Clause",
     "BSD-3-Clause",
+    "CC0-1.0",
+    "CDLA-Permissive-2.0",
     "GPL-3.0",
     "GPL-3.0-only",
     "GPL-3.0-or-later",
     "ISC",
     "MIT",
+    "MPL-2.0",
     "Unicode-3.0",
     "Zlib",
 ]

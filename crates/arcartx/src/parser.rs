@@ -946,11 +946,8 @@ fn action_type_from_name_inner(name: &str) -> Option<ActionType> {
 }
 
 fn clean_source_id(source_id: &str) -> String {
-    let filename = source_id
-        .replace('\\', "/")
-        .rsplit('/')
-        .next()
-        .unwrap_or(source_id);
+    let normalized_source_id = source_id.replace('\\', "/");
+    let filename = normalized_source_id.rsplit('/').next().unwrap_or(source_id);
     let lower = filename.to_ascii_lowercase();
     [".yaml", ".yml", ".json"]
         .iter()

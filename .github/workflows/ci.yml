@@ -25,6 +25,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Restore Pumpkin WIT dependency
+        run: git clone --depth 1 --branch master https://github.com/Pumpkin-MC/pumpkin-plugin-wit.git Pumpkin-master/pumpkin-plugin-wit
+
       - name: Install Rust toolchain
         run: rustup toolchain install 1.96.0 --profile minimal --component rustfmt,clippy
 
@@ -71,6 +74,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Restore Pumpkin WIT dependency
+        run: git clone --depth 1 --branch master https://github.com/Pumpkin-MC/pumpkin-plugin-wit.git Pumpkin-master/pumpkin-plugin-wit
+
       - name: Install Rust toolchain
         run: rustup toolchain install 1.96.0 --profile minimal --component rustfmt,clippy
 
@@ -98,6 +104,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Restore Pumpkin WIT dependency
+        run: git clone --depth 1 --branch master https://github.com/Pumpkin-MC/pumpkin-plugin-wit.git Pumpkin-master/pumpkin-plugin-wit
 
       - name: Install Rust toolchain
         run: rustup toolchain install 1.96.0 --profile minimal

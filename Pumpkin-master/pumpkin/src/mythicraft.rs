@@ -1473,12 +1473,12 @@ fn capability_from_name(name: &str) -> Option<ClientCapability> {
     }
 }
 
-fn find_arcartx_action(
-    documents: &[ArcartxDocument],
+fn find_arcartx_action<'a>(
+    documents: &'a [ArcartxDocument],
     page_id: &str,
     control_id: &str,
     action_type: UiActionType,
-) -> Option<&ActionDefinition> {
+) -> Option<&'a ActionDefinition> {
     documents
         .iter()
         .find(|document| document.page_id == page_id)?
